@@ -1,0 +1,598 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MuseumModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="ID_Author" />
+          </Key>
+          <Property Name="ID_Author" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Second_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Patronymic" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="ID_Employee" />
+          </Key>
+          <Property Name="ID_Employee" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Second_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Patronymic" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salary" Type="float" />
+          <Property Name="ID_Position" Type="int" />
+        </EntityType>
+        <EntityType Name="Execution">
+          <Key>
+            <PropertyRef Name="ID_Execution" />
+          </Key>
+          <Property Name="ID_Execution" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Exhibition">
+          <Key>
+            <PropertyRef Name="ID_Exhibition" />
+          </Key>
+          <Property Name="ID_Exhibition" Type="int" Nullable="false" />
+          <Property Name="Data" Type="date" />
+          <Property Name="Start_Exhibition" Type="time" Precision="7" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Number_Days" Type="int" />
+          <Property Name="ID_Employee" Type="int" />
+        </EntityType>
+        <EntityType Name="Hall">
+          <Key>
+            <PropertyRef Name="Id_Hall" />
+          </Key>
+          <Property Name="Id_Hall" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Floor" Type="int" />
+          <Property Name="Building" Type="int" />
+          <Property Name="ID_Employee" Type="int" />
+        </EntityType>
+        <EntityType Name="Painting">
+          <Key>
+            <PropertyRef Name="ID_Painting" />
+          </Key>
+          <Property Name="ID_Painting" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Year" Type="int" />
+          <Property Name="Price_rub" Type="float" />
+          <Property Name="ID_Hall" Type="int" />
+          <Property Name="ID_Author" Type="int" />
+          <Property Name="ID_Execution" Type="int" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="ID_Position" />
+          </Key>
+          <Property Name="ID_Position" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ID_Painting" />
+            <PropertyRef Name="ID_Exhibition" />
+          </Key>
+          <Property Name="ID_Painting" Type="int" Nullable="false" />
+          <Property Name="ID_Exhibition" Type="int" Nullable="false" />
+          <Property Name="Time" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="ID_Ticket" />
+          </Key>
+          <Property Name="ID_Ticket" Type="int" Nullable="false" />
+          <Property Name="Price" Type="float" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Employee_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="ID_Position" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="ID_Position" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exhibition_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Exhibition" Type="Self.Exhibition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID_Employee" />
+            </Principal>
+            <Dependent Role="Exhibition">
+              <PropertyRef Name="ID_Employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Hall_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Hall" Type="Self.Hall" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID_Employee" />
+            </Principal>
+            <Dependent Role="Hall">
+              <PropertyRef Name="ID_Employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Painting_Author">
+          <End Role="Author" Type="Self.Author" Multiplicity="0..1" />
+          <End Role="Painting" Type="Self.Painting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="ID_Author" />
+            </Principal>
+            <Dependent Role="Painting">
+              <PropertyRef Name="ID_Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Painting_Execution">
+          <End Role="Execution" Type="Self.Execution" Multiplicity="0..1" />
+          <End Role="Painting" Type="Self.Painting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Execution">
+              <PropertyRef Name="ID_Execution" />
+            </Principal>
+            <Dependent Role="Painting">
+              <PropertyRef Name="ID_Execution" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Painting_Hall">
+          <End Role="Hall" Type="Self.Hall" Multiplicity="0..1" />
+          <End Role="Painting" Type="Self.Painting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hall">
+              <PropertyRef Name="Id_Hall" />
+            </Principal>
+            <Dependent Role="Painting">
+              <PropertyRef Name="ID_Hall" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Exhibition">
+          <End Role="Exhibition" Type="Self.Exhibition" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exhibition">
+              <PropertyRef Name="ID_Exhibition" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="ID_Exhibition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Painting">
+          <End Role="Painting" Type="Self.Painting" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Painting">
+              <PropertyRef Name="ID_Painting" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="ID_Painting" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MuseumModelStoreContainer">
+          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Execution" EntityType="Self.Execution" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exhibition" EntityType="Self.Exhibition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hall" EntityType="Self.Hall" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Painting" EntityType="Self.Painting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Employee_Position" Association="Self.FK_Employee_Position">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exhibition_Employee" Association="Self.FK_Exhibition_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Exhibition" EntitySet="Exhibition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Hall_Employee" Association="Self.FK_Hall_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Hall" EntitySet="Hall" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Painting_Author" Association="Self.FK_Painting_Author">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Painting" EntitySet="Painting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Painting_Execution" Association="Self.FK_Painting_Execution">
+            <End Role="Execution" EntitySet="Execution" />
+            <End Role="Painting" EntitySet="Painting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Painting_Hall" Association="Self.FK_Painting_Hall">
+            <End Role="Hall" EntitySet="Hall" />
+            <End Role="Painting" EntitySet="Painting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Exhibition" Association="Self.FK_Schedule_Exhibition">
+            <End Role="Exhibition" EntitySet="Exhibition" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Painting" Association="Self.FK_Schedule_Painting">
+            <End Role="Painting" EntitySet="Painting" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MuseumModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="ID_Author" />
+          </Key>
+          <Property Name="ID_Author" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Second_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Painting" Relationship="Self.FK_Painting_Author" FromRole="Author" ToRole="Painting" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="ID_Employee" />
+          </Key>
+          <Property Name="ID_Employee" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Second_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Salary" Type="Double" />
+          <Property Name="ID_Position" Type="Int32" />
+          <NavigationProperty Name="Position" Relationship="Self.FK_Employee_Position" FromRole="Employee" ToRole="Position" />
+          <NavigationProperty Name="Exhibition" Relationship="Self.FK_Exhibition_Employee" FromRole="Employee" ToRole="Exhibition" />
+          <NavigationProperty Name="Hall" Relationship="Self.FK_Hall_Employee" FromRole="Employee" ToRole="Hall" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Execution">
+          <Key>
+            <PropertyRef Name="ID_Execution" />
+          </Key>
+          <Property Name="ID_Execution" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Painting" Relationship="Self.FK_Painting_Execution" FromRole="Execution" ToRole="Painting" />
+        </EntityType>
+        <EntityType Name="Exhibition">
+          <Key>
+            <PropertyRef Name="ID_Exhibition" />
+          </Key>
+          <Property Name="ID_Exhibition" Type="Int32" Nullable="false" />
+          <Property Name="Data" Type="DateTime" Precision="0" />
+          <Property Name="Start_Exhibition" Type="Time" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Number_Days" Type="Int32" />
+          <Property Name="ID_Employee" Type="Int32" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Exhibition_Employee" FromRole="Exhibition" ToRole="Employee" />
+          <NavigationProperty Name="Schedule" Relationship="Self.FK_Schedule_Exhibition" FromRole="Exhibition" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="Hall">
+          <Key>
+            <PropertyRef Name="Id_Hall" />
+          </Key>
+          <Property Name="Id_Hall" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Floor" Type="Int32" />
+          <Property Name="Building" Type="Int32" />
+          <Property Name="ID_Employee" Type="Int32" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Hall_Employee" FromRole="Hall" ToRole="Employee" />
+          <NavigationProperty Name="Painting" Relationship="Self.FK_Painting_Hall" FromRole="Hall" ToRole="Painting" />
+        </EntityType>
+        <EntityType Name="Painting">
+          <Key>
+            <PropertyRef Name="ID_Painting" />
+          </Key>
+          <Property Name="ID_Painting" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="Price_rub" Type="Double" />
+          <Property Name="ID_Hall" Type="Int32" />
+          <Property Name="ID_Author" Type="Int32" />
+          <Property Name="ID_Execution" Type="Int32" />
+          <NavigationProperty Name="Author" Relationship="Self.FK_Painting_Author" FromRole="Painting" ToRole="Author" />
+          <NavigationProperty Name="Execution" Relationship="Self.FK_Painting_Execution" FromRole="Painting" ToRole="Execution" />
+          <NavigationProperty Name="Hall" Relationship="Self.FK_Painting_Hall" FromRole="Painting" ToRole="Hall" />
+          <NavigationProperty Name="Schedule" Relationship="Self.FK_Schedule_Painting" FromRole="Painting" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="ID_Position" />
+          </Key>
+          <Property Name="ID_Position" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Employee_Position" FromRole="Position" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ID_Painting" />
+            <PropertyRef Name="ID_Exhibition" />
+          </Key>
+          <Property Name="ID_Painting" Type="Int32" Nullable="false" />
+          <Property Name="ID_Exhibition" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="Time" Precision="7" />
+          <NavigationProperty Name="Exhibition" Relationship="Self.FK_Schedule_Exhibition" FromRole="Schedule" ToRole="Exhibition" />
+          <NavigationProperty Name="Painting" Relationship="Self.FK_Schedule_Painting" FromRole="Schedule" ToRole="Painting" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="ID_Ticket" />
+          </Key>
+          <Property Name="ID_Ticket" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Painting_Author">
+          <End Role="Author" Type="Self.Author" Multiplicity="0..1" />
+          <End Role="Painting" Type="Self.Painting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="ID_Author" />
+            </Principal>
+            <Dependent Role="Painting">
+              <PropertyRef Name="ID_Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="ID_Position" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="ID_Position" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exhibition_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Exhibition" Type="Self.Exhibition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID_Employee" />
+            </Principal>
+            <Dependent Role="Exhibition">
+              <PropertyRef Name="ID_Employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Hall_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Hall" Type="Self.Hall" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID_Employee" />
+            </Principal>
+            <Dependent Role="Hall">
+              <PropertyRef Name="ID_Employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Painting_Execution">
+          <End Role="Execution" Type="Self.Execution" Multiplicity="0..1" />
+          <End Role="Painting" Type="Self.Painting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Execution">
+              <PropertyRef Name="ID_Execution" />
+            </Principal>
+            <Dependent Role="Painting">
+              <PropertyRef Name="ID_Execution" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Exhibition">
+          <End Role="Exhibition" Type="Self.Exhibition" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exhibition">
+              <PropertyRef Name="ID_Exhibition" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="ID_Exhibition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Painting_Hall">
+          <End Role="Hall" Type="Self.Hall" Multiplicity="0..1" />
+          <End Role="Painting" Type="Self.Painting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hall">
+              <PropertyRef Name="Id_Hall" />
+            </Principal>
+            <Dependent Role="Painting">
+              <PropertyRef Name="ID_Hall" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Painting">
+          <End Role="Painting" Type="Self.Painting" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Painting">
+              <PropertyRef Name="ID_Painting" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="ID_Painting" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MuseumEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Author" EntityType="Self.Author" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" />
+          <EntitySet Name="Execution" EntityType="Self.Execution" />
+          <EntitySet Name="Exhibition" EntityType="Self.Exhibition" />
+          <EntitySet Name="Hall" EntityType="Self.Hall" />
+          <EntitySet Name="Painting" EntityType="Self.Painting" />
+          <EntitySet Name="Position" EntityType="Self.Position" />
+          <EntitySet Name="Schedule" EntityType="Self.Schedule" />
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" />
+          <AssociationSet Name="FK_Painting_Author" Association="Self.FK_Painting_Author">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Painting" EntitySet="Painting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Position" Association="Self.FK_Employee_Position">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exhibition_Employee" Association="Self.FK_Exhibition_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Exhibition" EntitySet="Exhibition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Hall_Employee" Association="Self.FK_Hall_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Hall" EntitySet="Hall" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Painting_Execution" Association="Self.FK_Painting_Execution">
+            <End Role="Execution" EntitySet="Execution" />
+            <End Role="Painting" EntitySet="Painting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Exhibition" Association="Self.FK_Schedule_Exhibition">
+            <End Role="Exhibition" EntitySet="Exhibition" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Painting_Hall" Association="Self.FK_Painting_Hall">
+            <End Role="Hall" EntitySet="Hall" />
+            <End Role="Painting" EntitySet="Painting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Painting" Association="Self.FK_Schedule_Painting">
+            <End Role="Painting" EntitySet="Painting" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MuseumModelStoreContainer" CdmEntityContainer="MuseumEntities">
+          <EntitySetMapping Name="Author">
+            <EntityTypeMapping TypeName="MuseumModel.Author">
+              <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="ID_Author" ColumnName="ID_Author" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Second_Name" ColumnName="Second_Name" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee">
+            <EntityTypeMapping TypeName="MuseumModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ID_Employee" ColumnName="ID_Employee" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Second_Name" ColumnName="Second_Name" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="ID_Position" ColumnName="ID_Position" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Execution">
+            <EntityTypeMapping TypeName="MuseumModel.Execution">
+              <MappingFragment StoreEntitySet="Execution">
+                <ScalarProperty Name="ID_Execution" ColumnName="ID_Execution" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exhibition">
+            <EntityTypeMapping TypeName="MuseumModel.Exhibition">
+              <MappingFragment StoreEntitySet="Exhibition">
+                <ScalarProperty Name="ID_Exhibition" ColumnName="ID_Exhibition" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Start_Exhibition" ColumnName="Start_Exhibition" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Number_Days" ColumnName="Number_Days" />
+                <ScalarProperty Name="ID_Employee" ColumnName="ID_Employee" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hall">
+            <EntityTypeMapping TypeName="MuseumModel.Hall">
+              <MappingFragment StoreEntitySet="Hall">
+                <ScalarProperty Name="Id_Hall" ColumnName="Id_Hall" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Floor" ColumnName="Floor" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="ID_Employee" ColumnName="ID_Employee" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Painting">
+            <EntityTypeMapping TypeName="MuseumModel.Painting">
+              <MappingFragment StoreEntitySet="Painting">
+                <ScalarProperty Name="ID_Painting" ColumnName="ID_Painting" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Price_rub" ColumnName="Price_rub" />
+                <ScalarProperty Name="ID_Hall" ColumnName="ID_Hall" />
+                <ScalarProperty Name="ID_Author" ColumnName="ID_Author" />
+                <ScalarProperty Name="ID_Execution" ColumnName="ID_Execution" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Position">
+            <EntityTypeMapping TypeName="MuseumModel.Position">
+              <MappingFragment StoreEntitySet="Position">
+                <ScalarProperty Name="ID_Position" ColumnName="ID_Position" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedule">
+            <EntityTypeMapping TypeName="MuseumModel.Schedule">
+              <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="ID_Painting" ColumnName="ID_Painting" />
+                <ScalarProperty Name="ID_Exhibition" ColumnName="ID_Exhibition" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ticket">
+            <EntityTypeMapping TypeName="MuseumModel.Ticket">
+              <MappingFragment StoreEntitySet="Ticket">
+                <ScalarProperty Name="ID_Ticket" ColumnName="ID_Ticket" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

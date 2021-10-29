@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMuseum", "SQLMuseum\SQLMuseum.csproj", "{B70B8458-40EC-46FC-AB39-CB98E10677C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B70B8458-40EC-46FC-AB39-CB98E10677C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B70B8458-40EC-46FC-AB39-CB98E10677C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B70B8458-40EC-46FC-AB39-CB98E10677C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B70B8458-40EC-46FC-AB39-CB98E10677C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {943880C4-45C1-4E32-9B4C-ADB1A2CD6DFF}
+	EndGlobalSection
+EndGlobal
